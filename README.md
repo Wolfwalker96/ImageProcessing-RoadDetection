@@ -1,2 +1,2 @@
 # ImageProcessing-RoadDetection
-Roads Detectecting Algorithm
+Roads Detecting Algorithm
