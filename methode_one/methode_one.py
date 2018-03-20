@@ -8,6 +8,7 @@ import time
 import numpy as np
 import os
 
+
 def algorithm(filepath):
     img_i = cv2.imread(filepath)
     img = cv2.cvtColor(img_i,cv2.COLOR_BGR2GRAY)
@@ -33,8 +34,28 @@ def algorithm(filepath):
     #cv2.imshow("Tresh",thresh)
     #cv2.imshow("Image",img)
     cv2.waitKey(0)
+    
+    
+    # Contours that touch the bottom
+    height, width  = img.shape[:2]
+    height -= 5 # ptit marge
+    bottom_contours = []
+    for c in contours:
+        for val in c:
+            if val[0].item(1) >= height:
+                bottom_contours.append(c)
+                break
+           
+    # biggest area
+    r_areas = [cv2.contourArea(c) for c in contours]
+    max_rarea = np.max(r_areas)
 
-    return cv2.drawContours(img_i, contours, -1, (0,255,0), 3)
+    contour = bottom_contours[0]
+    for c in bottom_contours:
+        if cv2.contourArea(c) == max_rarea:
+            contour = c                
+    
+    return cv2.drawContours(img_i, [contour], -1, (0,255,0), 3)
 
 
 if __name__ == "__main__":
