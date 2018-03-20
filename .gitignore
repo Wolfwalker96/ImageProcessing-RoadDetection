@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+output
+.idea/RoadDetection.iml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+output/
