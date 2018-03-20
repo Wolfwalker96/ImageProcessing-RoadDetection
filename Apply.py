@@ -14,7 +14,7 @@ def apply_road_detection(provider:ProviderBase, algorithm:AlgorithmBase, gui=Fal
         print(f"{filename} {count} / {provider.count}", end="\r")
         image, direction = algorithm.detect(input)
         if call:
-            callback.imageProcessed(image, direction, filename)
+            callback.image_processed(image, direction, filename)
         if gui:
             cv2.putText(image, f"{int(count * 100 / provider.count)}%",
                         (100,400),

@@ -1,13 +1,26 @@
 class CallbackBase:
 
-    def imageProcessed(self, image, direction):
+    def image_processed(self, image, direction, filename):
+        """
+        Executed for each images
+        :param image: The image
+        :param direction: The road direction
+        :param filename: The image filename
+        :return: Nothings
+        """
         pass
 
     def end(self):
+        """
+        Executed when they are not image left
+        :return: Nothing
+        """
         pass
 
-
 class AnimateGifCallback(CallbackBase):
+    """
+    Build an animate gif.
+    """
     _images = list()
 
     def __init__(self, output):
@@ -18,7 +31,7 @@ class AnimateGifCallback(CallbackBase):
         if not os.path.exists(os.path.join(output, "animate")):
             os.mkdir(os.path.join(output, "animate"))
 
-    def imageProcessed(self, image, direction, filename):
+    def image_processed(self, image, direction, filename):
         import cv2, os, numpy as np
         cv2.imwrite(os.path.join(self._output, f"out_{filename}"), image)
         self._images.append(np.copy(image))
