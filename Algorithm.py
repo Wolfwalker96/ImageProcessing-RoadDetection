@@ -1,7 +1,7 @@
 
 class AlgorithmBase:
-    @staticmethod
-    def detect(img):
+
+    def detect(self, img):
         """
         Detect road on img
         :param img: Image containing a road

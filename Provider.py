@@ -1,5 +1,6 @@
 import cv2
 
+
 class ProviderBase:
     @property
     def count(self):
@@ -37,3 +38,30 @@ class SequenceProvider(ProviderBase):
         import os
         filename = self._images.pop(0)
         return cv2.imread(os.path.join(self._input,filename)), filename
+
+
+class VideoProvider(ProviderBase):
+
+    def __init__(self,filename):
+        from os import path
+        self._filename = path.basename(path.normpath(filename))
+        self._input = cv2.VideoCapture(filename)
+        self._input.set(cv2.CAP_PROP_FPS, 1)
+        self._has_next, self._next_frame = self._input.read()
+        self._count = int(self._input.get(cv2.CAP_PROP_FRAME_COUNT))
+        self._current_frame_number = 0
+
+    @property
+    def count(self):
+        return self._count
+
+    @property
+    def has_next(self):
+        return self._has_next
+
+    @property
+    def next_image(self):
+        self._current_frame_number += 1
+        current_frame = self._next_frame
+        self._has_next, self._next_frame = self._input.read()
+        return current_frame, f"{self._filename}_frame_{self._current_frame_number}"

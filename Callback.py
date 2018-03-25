@@ -17,27 +17,30 @@ class CallbackBase:
         """
         pass
 
-class AnimateGifCallback(CallbackBase):
+
+class SaveImageCallback(CallbackBase):
     """
     Build an animate gif.
     """
-    _images = list()
 
-    def __init__(self, output):
+    def __init__(self, output, animate=True):
+        self._images = list()
         self._output = output
+        self._animate=animate
         import os
         if not os.path.exists(output):
-            os.mkdir("output")
+            os.mkdir(output)
         if not os.path.exists(os.path.join(output, "animate")):
             os.mkdir(os.path.join(output, "animate"))
 
-    def image_processed(self, image, direction, filename):
+    def image_processed(self, image, direction, image_title):
         import cv2, os, numpy as np
-        cv2.imwrite(os.path.join(self._output, f"out_{filename}"), image)
+        cv2.imwrite(os.path.join(self._output, f"out_{image_title}.jpg"), image)
         self._images.append(np.copy(image))
 
     def end(self):
-        import imageio, os, time
-        print("Generating Animation")
-        imageio.mimsave(os.path.join(self._output, "animate", f"out_{time.strftime('%m_%d_%Y %H.%M.%S')}.gif"), self._images)
+        if self._animate:
+            import imageio, os, time
+            print("Generating Animation")
+            imageio.mimsave(os.path.join(self._output, "animate", f"out_{time.strftime('%m_%d_%Y %H.%M.%S')}.gif"), self._images)
 
