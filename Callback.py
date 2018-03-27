@@ -44,3 +44,20 @@ class SaveImageCallback(CallbackBase):
             print("Generating Animation")
             imageio.mimsave(os.path.join(self._output, "animate", f"out_{time.strftime('%m_%d_%Y %H.%M.%S')}.gif"), self._images)
 
+
+class TurtleCallback(CallbackBase):
+    """
+    Build an animate gif.
+    """
+
+    def image_processed(self, image, direction, image_title):
+        import turtle
+        turtle.pendown()
+        #turtle.left(direction*-12)
+        turtle.seth(90-((-1*direction)*-90))
+
+        print(f"{direction} - {turtle.heading()}")
+        turtle.forward(10)
+
+    def end(self):
+        pass
