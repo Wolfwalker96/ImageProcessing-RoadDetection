@@ -16,12 +16,14 @@ class OtsuDetection(AlgorithmBase):
         if self._inverse:
             img = cv2.bitwise_not(img)
 
-        trash, img = cv2.threshold(img, 100, 255.0, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        ret, img = cv2.threshold(img, 100, 255.0, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         # Open
-        kernel = np.ones((5, 5), np.uint8)
-        img = cv2.erode(img, kernel, iterations=3)
-        img = cv2.dilate(img, kernel, iterations=3)
+        iterations = 5  # Find Best Value
+        kernel_square_side = 6  # Find Best Value
+        kernel = np.ones((kernel_square_side, kernel_square_side), np.uint8)
+        img = cv2.erode(img, kernel, iterations=iterations)
+        img = cv2.dilate(img, kernel, iterations=iterations)
 
         # Contour detection
         ret, thresh = cv2.threshold(img, 127, 255, 0)

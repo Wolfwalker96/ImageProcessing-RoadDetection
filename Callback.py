@@ -18,6 +18,20 @@ class CallbackBase:
         pass
 
 
+class MultipleCallback(CallbackBase):
+
+    def __init__(self, *callbacks):
+        self._callbacks = callbacks
+
+    def image_processed(self, image, direction, filename):
+        for callback in self._callbacks:
+            callback.image_processed(image, direction, filename)
+
+    def end(self):
+        for callback in self._callbacks:
+            callback.end()
+
+
 class SaveImageCallback(CallbackBase):
     """
     Build an animate gif.
@@ -47,17 +61,16 @@ class SaveImageCallback(CallbackBase):
 
 class TurtleCallback(CallbackBase):
     """
-    Build an animate gif.
+    Build path with a turtle
     """
+
+    def __init__(self):
+        self._previous_angle = 0
 
     def image_processed(self, image, direction, image_title):
         import turtle
         turtle.pendown()
-        #turtle.left(direction*-12)
-        turtle.seth(90-((-1*direction)*-90))
-
-        print(f"{direction} - {turtle.heading()}")
-        turtle.forward(10)
-
-    def end(self):
-        pass
+        angle = (direction*-15)
+        turtle.left(angle)
+        self._previous_angle = angle
+        turtle.forward(1)
