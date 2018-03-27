@@ -8,6 +8,7 @@ class OtsuDetection(AlgorithmBase):
     """
     def __init__(self,inverse=False):
         self._inverse = inverse
+        self._last_ratios = list()
 
     def detect(self, img_i):
         img = cv2.cvtColor(img_i, cv2.COLOR_BGR2GRAY)
@@ -40,9 +41,39 @@ class OtsuDetection(AlgorithmBase):
         r_areas = [cv2.contourArea(c) for c in contours]
         max_rarea = np.max(r_areas)
 
-        contour = bottom_contours[0]
+        contour = bottom_contours[0] if len(bottom_contours)>0 else contours[0]
         for c in bottom_contours:
             if cv2.contourArea(c) == max_rarea:
                 contour = c
 
-        return cv2.drawContours(img_i, [contour], -1, (0, 255, 0), 3), 0
+        left_side = list()
+        right_side = list()
+
+        for i, point in enumerate(contour[1:-2]):
+            current_point = point[0]
+            before_point = contour[i-1][0]
+            after_point = contour[i+1][0]
+            derivation = (after_point[1] - before_point[1])/(after_point[0] - before_point[0])
+            if derivation < 0:
+                right_side.append(current_point)
+            elif derivation > 0:
+                left_side.append(current_point)
+
+        for point in left_side:
+            cv2.circle(img_i, tuple(point), 5, (255, 0, 0))
+        for point in right_side:
+            cv2.circle(img_i, tuple(point), 5, (0, 0, 255))
+
+        left_ratio = len(left_side) / (len(right_side) + len(left_side))
+
+        self._last_ratios.append(left_ratio)
+        from statistics import median
+
+        NB_MEDIAN = 1
+        if len(self._last_ratios) > NB_MEDIAN:
+            left_ratio = median(self._last_ratios[-NB_MEDIAN:])
+
+        right_ratio = 1 - left_ratio
+
+        return img_i, (-1*left_ratio) + right_ratio
+        # return cv2.drawContours(img_i, [contour], -1, (0, 255, 0), 3), ()
