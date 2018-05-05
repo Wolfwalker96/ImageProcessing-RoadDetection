@@ -89,10 +89,10 @@ class OtsuHullDetection(AlgorithmBase):
             if cv2.contourArea(c) == max_rarea:
                 contour = c
 
-        for i, point in enumerate(contour[1:-2]):
+        for i, point in enumerate(hull[1:-2]):
             current_point = point[0]
-            before_point = contour[i-1][0]
-            after_point = contour[i+1][0]
+            before_point = hull[i-1][0]
+            after_point = hull[i+1][0]
             derivation = (after_point[1] - before_point[1])/(after_point[0] - before_point[0])
             if derivation < 0:
                 right_side.append(current_point)
