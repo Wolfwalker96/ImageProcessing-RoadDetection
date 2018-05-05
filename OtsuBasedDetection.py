@@ -11,31 +11,31 @@ class OtsuDetection(AlgorithmBase):
         self._last_ratios = list()
 
     def detect(self, img_i):
-        cv2.imwrite("step_0.jpg", img_i)
+        # cv2.imwrite("step_0.jpg", img_i)
         img = cv2.cvtColor(img_i, cv2.COLOR_BGR2GRAY)
 
-        cv2.imwrite("step_1_BW.jpg", img)
+        # cv2.imwrite("step_1_BW.jpg", img)
 
         if self._inverse:
             img = cv2.bitwise_not(img)
 
         ret, img = cv2.threshold(img, 100, 255.0, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-        cv2.imwrite("step_2_OTSU.jpg", img)
+        # cv2.imwrite("step_2_OTSU.jpg", img)
 
         # Open
         iterations = 5  # Find Best Value
         kernel_square_side = 6  # Find Best Value
         kernel = np.ones((kernel_square_side, kernel_square_side), np.uint8)
         img = cv2.erode(img, kernel, iterations=iterations)
-        cv2.imwrite("step_3.1_Erode.jpg", img)
+        # cv2.imwrite("step_3.1_Erode.jpg", img)
         img = cv2.dilate(img, kernel, iterations=iterations)
-        cv2.imwrite("step_3.2_Dilate.jpg", img)
+        # cv2.imwrite("step_3.2_Dilate.jpg", img)
 
         # Contour detection
         image, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        cv2.imwrite("step_4_Contours.jpg", cv2.drawContours(img_i.copy(), contours, -1, (0, 255, 0), 3))
+        # cv2.imwrite("step_4_Contours.jpg", cv2.drawContours(img_i.copy(), contours, -1, (0, 255, 0), 3))
 
         # Contours that touch the bottom
         height, width = img.shape[:2]
@@ -56,7 +56,7 @@ class OtsuDetection(AlgorithmBase):
             if cv2.contourArea(c) == max_rarea:
                 contour = c
 
-        cv2.imwrite("step_5_SingleContour.jpg", cv2.drawContours(img_i.copy(), [contour], -1, (0, 255, 0), 3))
+        # cv2.imwrite("step_5_SingleContour.jpg", cv2.drawContours(img_i.copy(), [contour], -1, (0, 255, 0), 3))
 
         left_side = list()
         right_side = list()
@@ -79,7 +79,7 @@ class OtsuDetection(AlgorithmBase):
         for point in right_side:
             cv2.circle(img_i, tuple(point), 5, (0, 0, 255))
 
-        cv2.imwrite("step_6_SideDetection.jpg", img_i)
+        # cv2.imwrite("step_6_SideDetection.jpg", img_i)
 
         left_ratio = len(left_side) / (len(right_side) + len(left_side))
 
