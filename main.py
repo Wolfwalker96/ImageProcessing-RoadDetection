@@ -5,7 +5,7 @@ from OtsuBasedDetection import OtsuDetection
 
 
 def freescale():
-    detects(provider=SequenceProvider("../picture_freescale/15.04.16/Avant/Sequence6/"),
+    detects(provider=SequenceProvider("../picture_freescale/15.04.16/Avant/Sequence1/"),
             algorithm=OtsuDetection(),
             callback=SaveImageCallback("output"),
             # callback=TurtleCallback(),
@@ -30,6 +30,22 @@ def gta():
 
 
 if __name__ == "__main__":
-    single_image_demo()
-    # freescale()
-    # gta()
+    from sys import argv
+    from Provider import ProviderBase
+    if len(argv) == 3:
+        provider = ProviderBase()
+        if argv[1] == "Video":
+            provider = VideoProvider(argv[2])
+        elif argv[1] == "Sequence":
+            provider = SequenceProvider(argv[2])
+        elif argv[1] == "Image":
+            provider = SingleImageProvider(argv[2])
+
+        detects(provider=provider,
+                algorithm=OtsuDetection(),
+                gui=True)
+
+    else:
+        # single_image_demo()
+        freescale()
+        # gta()
