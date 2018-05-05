@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
         detects(provider=provider,
                 algorithm=OtsuDetection(),
+                callback=SaveImageCallback("output"),
                 gui=True)
 
     else:
