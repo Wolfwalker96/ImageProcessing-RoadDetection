@@ -65,7 +65,10 @@ class OtsuDetection(AlgorithmBase):
             current_point = point[0]
             before_point = contour[i-1][0]
             after_point = contour[i+1][0]
-            derivation = (after_point[1] - before_point[1])/(after_point[0] - before_point[0])
+            try:
+                derivation = (after_point[1] - before_point[1])/(after_point[0] - before_point[0])
+            except Exception as e:
+                derivation = 0
             if derivation < 0:
                 right_side.append(current_point)
             elif derivation > 0:
