@@ -14,7 +14,7 @@ def freescale():
 
 
 def single_image_demo():
-    detects(provider=SingleImageProvider("../picture_freescale/15.04.16/Avant/Sequence6/1HEARC.JPG"),
+    detects(provider=SingleImageProvider("../picture_freescale/15.04.16/Avant/Sequence6/25HEARC.JPG"),
             algorithm=OtsuDetection(),
             callback=SaveImageCallback("output_2"),
             gui=True)
