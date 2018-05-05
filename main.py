@@ -1,5 +1,5 @@
 from Apply import apply_road_detection as detects
-from Provider import SequenceProvider, VideoProvider
+from Provider import SequenceProvider, VideoProvider, SingleImageProvider
 from Callback import SaveImageCallback, TurtleCallback, MultipleCallback
 from OtsuBasedDetection import OtsuDetection
 
@@ -13,6 +13,13 @@ def freescale():
             gui=True)
 
 
+def single_image_demo():
+    detects(provider=SingleImageProvider("../picture_freescale/15.04.16/Avant/Sequence6/1HEARC.JPG"),
+            algorithm=OtsuDetection(),
+            callback=SaveImageCallback("output_2"),
+            gui=True)
+
+
 def gta():
     from Apply import Frequency
     detects(provider=VideoProvider("../gta.mp4"),
@@ -23,5 +30,6 @@ def gta():
 
 
 if __name__ == "__main__":
-    freescale()
+    single_image_demo()
+    # freescale()
     # gta()

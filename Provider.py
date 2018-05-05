@@ -15,6 +15,29 @@ class ProviderBase:
         pass
 
 
+class SingleImageProvider(ProviderBase):
+    _image = str()
+    _has_next = bool()
+
+    def __init__(self, filepath):
+        self._image = filepath
+        self._has_next = True
+
+    @property
+    def count(self):
+        return 1
+
+    @property
+    def has_next(self):
+        ret = self._has_next
+        self._has_next = False
+        return ret
+
+    @property
+    def next_image(self):
+        return cv2.imread(self._image), self._image.split("/")[-1]
+
+
 class SequenceProvider(ProviderBase):
     _images = list()
 
