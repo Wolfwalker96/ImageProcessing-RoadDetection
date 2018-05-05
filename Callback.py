@@ -73,4 +73,4 @@ class TurtleCallback(CallbackBase):
         angle = (direction*-15)
         turtle.left(angle)
         self._previous_angle = angle
-        turtle.forward(1)
+        turtle.forward(3)
