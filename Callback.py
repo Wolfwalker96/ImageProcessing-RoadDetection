@@ -46,7 +46,6 @@ class SaveImageCallback(CallbackBase):
             os.mkdir(output)
         else:
             for file in os.listdir(output):
-                print(os.path.join(output, file))
                 if os.path.isfile(os.path.join(output, file)):
                     os.remove(os.path.join(output, file))
         if not os.path.exists(os.path.join(output, "animate")):
