@@ -7,9 +7,9 @@ from OtsuBasedDetection import OtsuDetection
 def freescale():
     detects(provider=SequenceProvider("../picture_freescale/15.04.16/Avant/Sequence6/"),
             algorithm=OtsuDetection(),
-            # callback=SaveImageCallback("output"),
+            callback=SaveImageCallback("output"),
             # callback=TurtleCallback(),
-            callback=MultipleCallback(SaveImageCallback("output"), TurtleCallback()),
+            # callback=MultipleCallback(SaveImageCallback("output"), TurtleCallback()),
             gui=True)
 
 
